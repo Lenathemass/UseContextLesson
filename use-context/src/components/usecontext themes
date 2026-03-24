@@ -1,0 +1,62 @@
+usecontext.jsx
+
+import { useContext } from "react";
+import { ThemeContext } from "./ThemeContext";
+
+const App = () => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
+  const style = {
+    backgroundColor: theme === "light" ? "#fff" : "#333",
+    color: theme === "light" ? "#000" : "#fff",
+    height: "100vh",
+    textAlign: "center",
+    paddingTop: "50px",
+  };
+
+  return (
+    <div style={style}>
+      <h1>{theme.toUpperCase()} MODE</h1>
+      <button onClick={toggleTheme}>Toggle Theme</button>
+    </div>
+  );
+};
+
+export default App;
+
+
+
+provider.jsx
+
+import { useState } from "react";
+import { ThemeContext } from "./ThemeContext";
+
+const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState("light");
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export default ThemeProvider;
+
+main.jsx
+
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import ThemeProvider from "./ThemeProvider";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <ThemeProvider>
+    <App />
+  </ThemeProvider>
+);
